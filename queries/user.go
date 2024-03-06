@@ -10,7 +10,7 @@ import (
 )
 
 func SaveUser(u *serializers.UserSignUp) error {
-	stmt, err := database.DB.Prepare("INSERT INTO users(username, email, password) VALUES($1, $2, crypt($3, gen_salt('bf')))")
+	stmt, err := database.DB.Prepare("INSERT INTO users(username, email, password) VALUES($1, $2, $3)")
 	if err != nil {
 		log.Println("Error when trying to prepare statement")
 		log.Println(err)
@@ -51,7 +51,7 @@ func FindUserByUsernameAndEmail(u *serializers.UserSignUp) (*models.User, error)
 }
 
 func FindUserByUsernameAndPassword(username, password string) (*models.User, error) {
-	stmt, err := database.DB.Prepare("SELECT id, username, email, firstname, lastname FROM users WHERE username = $1 AND password = crypt($2, password)")
+	stmt, err := database.DB.Prepare("SELECT id, username, email, firstname, lastname FROM users WHERE username = $1 AND password = password")
 	if err != nil {
 		log.Println("Error when trying to prepare statement")
 		log.Println(err)
@@ -115,7 +115,7 @@ func UsersCount() (int, error) {
 }
 
 func UpdatePassword(username string, u *serializers.UpdatePasswordIn) error {
-	stmt, err := database.DB.Prepare("UPDATE users SET password = crypt($2, gen_salt('bf')) WHERE username = $1 AND password = crypt($3, password)")
+	stmt, err := database.DB.Prepare("UPDATE users SET password = $2 WHERE username = $1 AND password = $3")
 	if err != nil {
 		log.Println("Error when trying to prepare statement")
 		log.Println(err)

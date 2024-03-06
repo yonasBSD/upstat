@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+  "os"
 
 	"github.com/chamanbravo/upstat/database"
 	_ "github.com/chamanbravo/upstat/docs"
@@ -40,5 +41,12 @@ func main() {
 	routes.NotificationRoutes(app)
 	routes.StatusPagesRoutes(app)
 
-	app.Listen(":8000")
+  port, ok := os.LookupEnv("PORT")
+  if !ok {
+    port = ":8000"
+  } else {
+    port = ":" + port
+  }
+
+  log.Fatal(app.Listen(port))
 }
