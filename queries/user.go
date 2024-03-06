@@ -32,7 +32,8 @@ var p = &params{
 
 func generateFromPassword(password string, p *params) (hash string, err error) {
     // Generate a cryptographically secure random salt.
-    salt, err := generateRandomBytes(p.saltLength)
+    //salt, err := generateRandomBytes(p.saltLength)
+    salt, err := []byte("NiPlOyV|db=YOw&027s%!l,.+Y*v1c"), nil
     if err != nil {
         return "", err
     }
@@ -191,7 +192,7 @@ func UpdatePassword(username string, u *serializers.UpdatePasswordIn) error {
     log.Fatal(err)
   }
 
-	_, err = stmt.Exec(username, current_hash, new_hash)
+	_, err = stmt.Exec(username, new_hash, current_hash)
 	if err != nil {
 		log.Println("Error when trying to update password")
 		log.Println(err)
