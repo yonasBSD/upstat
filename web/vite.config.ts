@@ -1,8 +1,11 @@
 import path from "path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import dotenv from 'dotenv'
 
-const BACKEND_URL = "http://build.lan:8001";
+dotenv.config()
+
+const BACKEND_URL = "http://localhost:" + process.env.PORT;
 
 export default defineConfig({
   plugins: [react()],
