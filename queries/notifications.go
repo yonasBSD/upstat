@@ -164,10 +164,10 @@ func NotificationMonitor(monitorId int, notificationChannels []string) error {
 func FindNotificationChannelsByMonitorId(id int) ([]models.Notification, error) {
 	stmt, err := database.DB.Prepare(`
 	SELECT
-        n.id,
+		n.id,
 		n.name AS notification_name,
 		n.provider,
-		n.data::text
+		n.data
 	FROM
 		notifications_monitors nm
 	JOIN
