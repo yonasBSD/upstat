@@ -6,19 +6,25 @@ import (
 	"fmt"
 	"os"
 
-	_ "github.com/lib/pq"
+  _ "modernc.org/sqlite"
 	"github.com/pressly/goose/v3"
 )
 
 var DB *sql.DB
+const dbFileName = "upstat.db"
+
 
 //go:embed migrations/*.sql
 var embedMigrations embed.FS
 
 func DBConnect() error {
-	psqlInfo := os.Getenv("POSTGRES_DSN")
+  db_file, ok := os.LookupEnv("DB_FILE")
+  if !ok {
+    db_file = dbFileName
+  }
+
 	var err error
-	DB, err = sql.Open("postgres", psqlInfo)
+	DB, err = sql.Open("sqlite", db_file)
 
 	if err != nil {
 		return fmt.Errorf("could not connect to database: %v", err)
@@ -30,7 +36,7 @@ func DBConnect() error {
 
 	goose.SetBaseFS(embedMigrations)
 
-	if err := goose.SetDialect("postgres"); err != nil {
+	if err := goose.SetDialect("sqlite3"); err != nil {
 		panic(err)
 	}
 
