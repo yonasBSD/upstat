@@ -1,6 +1,11 @@
-FROM golang:1.21.3 AS build
+FROM golang:1.21.8-alpine AS build
 WORKDIR /app
 COPY . .
+RUN apk -U upgrade \
+    && apk add --no-cache yarn
+WORKDIR web
+RUN yarn install && yarn build
+WORKDIR /app
 RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 RUN chmod +x ./startup.sh
