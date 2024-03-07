@@ -40,6 +40,7 @@ func main() {
 	routes.UserRoutes(app)
 	routes.NotificationRoutes(app)
 	routes.StatusPagesRoutes(app)
+	routes.UIRoutes(app)
 
   port, ok := os.LookupEnv("PORT")
   if !ok {
