@@ -1,18 +1,5 @@
-version: '3.4'
+version: '3.8'
 services:
-  db:
-    restart: unless-stopped
-    image: postgres:13-alpine
-    env_file:
-      - .env
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
   api:
     restart: unless-stopped
     build:
@@ -33,7 +20,7 @@ services:
 
   nginx:
     restart: unless-stopped
-    image: nginx:1.21.1-alpine
+    image: nginx:alpine-slim
     ports:
       - "$IPADDR:$PORT:80"
     volumes:
