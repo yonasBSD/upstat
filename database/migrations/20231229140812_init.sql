@@ -3,7 +3,7 @@
 -- CREATE EXTENSION pgcrypto;
 
 CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     username VARCHAR(32) UNIQUE NOT NULL,
     email VARCHAR(50) UNIQUE NOT NULL,
     firstname VARCHAR(32) DEFAULT '',
@@ -12,7 +12,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE monitors (
-    id SERIAL PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(32) NOT NULL,
     url VARCHAR(50) NOT NULL,
     type VARCHAR(50) NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE monitors (
 );
 
 CREATE TABLE heartbeats (
-    id SERIAL PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     monitor_id INTEGER REFERENCES monitors(id) ON DELETE CASCADE NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     status_code VARCHAR(50) NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE heartbeats (
 );
 
 CREATE TABLE notifications (
-    id SERIAL PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(32) NOT NULL,
     provider VARCHAR(50) NOT NULL,
     data json NOT NULL
@@ -45,7 +45,7 @@ CREATE TABLE notifications_monitors (
 );
 
 CREATE TABLE status_pages (
-    id SERIAL PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(32) NOT NULL,
     slug VARCHAR(32) NOT NULL
 );
