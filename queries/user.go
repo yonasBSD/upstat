@@ -5,6 +5,8 @@ import (
 	"log"
   "crypto/rand"
   "encoding/hex"
+  "os"
+  "errors"
 
 	"github.com/chamanbravo/upstat/database"
 	"github.com/chamanbravo/upstat/models"
@@ -31,9 +33,14 @@ var p = &params{
 }
 
 func generateFromPassword(password string, p *params) (hash string, err error) {
+    secretKey := os.Getenv("JWT_SECRET_KEY")
+    if secretKey == "" {
+      return "", errors.New("JWT_SECRET_KEY not set")
+    }
+
     // Generate a cryptographically secure random salt.
     //salt, err := generateRandomBytes(p.saltLength)
-    salt, err := []byte("NiPlOyV|db=YOw&027s%!l,.+Y*v1c"), nil
+    salt, err := []byte(secretKey), nil
     if err != nil {
         return "", err
     }
