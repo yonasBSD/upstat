@@ -6,3 +6,7 @@ server
 node_modules
 build
 dist
+upstat
+*.db
+web/yarn.lock
+web/dist
