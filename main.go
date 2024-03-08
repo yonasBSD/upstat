@@ -12,6 +12,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	_ "github.com/joho/godotenv/autoload"
+
+  "github.com/ansrivas/fiberprometheus/v2"
 )
 
 // @title Upstat API
@@ -25,15 +27,18 @@ import (
 // @in header
 // @name Authorization
 func main() {
+  // Start a new GoFiber application
 	app := fiber.New()
 	app.Use(logger.New())
 
+  // Connect to the database
 	if err := database.DBConnect(); err != nil {
 		log.Fatal("Could not connect to database", err)
 	}
 
 	utils.StartGoroutineSetup()
 
+  // Setup routes
 	routes.AuthRoutes(app)
 	routes.SwaggerRoute(app)
 	routes.MonitorRoutes(app)
@@ -42,6 +47,12 @@ func main() {
 	routes.StatusPagesRoutes(app)
 	routes.UIRoutes(app)
 
+  // Export prometheus metrics
+  prometheus := fiberprometheus.New("upstat")
+  prometheus.RegisterAt(app, "/metrics")
+  app.Use(prometheus.Middleware)
+
+  // Get address and port
   port, ok := os.LookupEnv("PORT")
   if !ok {
     port = ":8000"
@@ -49,5 +60,6 @@ func main() {
     port = ":" + port
   }
 
+  // Launch the server
   log.Fatal(app.Listen(port))
 }
