@@ -1,17 +1,17 @@
 package main
 
 import (
-	"log"
+  "log"
   "os"
 
-	"github.com/chamanbravo/upstat/database"
-	_ "github.com/chamanbravo/upstat/docs"
-	"github.com/chamanbravo/upstat/utils"
+  "github.com/chamanbravo/upstat/database"
+  _ "github.com/chamanbravo/upstat/docs"
+  "github.com/chamanbravo/upstat/utils"
 
-	"github.com/chamanbravo/upstat/routes"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/logger"
-	_ "github.com/joho/godotenv/autoload"
+  "github.com/chamanbravo/upstat/routes"
+  "github.com/gofiber/fiber/v2"
+  "github.com/gofiber/fiber/v2/middleware/logger"
+  _ "github.com/joho/godotenv/autoload"
 
   "github.com/ansrivas/fiberprometheus/v2"
 )
@@ -28,24 +28,24 @@ import (
 // @name Authorization
 func main() {
   // Start a new GoFiber application
-	app := fiber.New()
-	app.Use(logger.New())
+  app := fiber.New()
+  app.Use(logger.New())
 
   // Connect to the database
-	if err := database.DBConnect(); err != nil {
-		log.Fatal("Could not connect to database", err)
-	}
+  if err := database.DBConnect(); err != nil {
+    log.Fatal("Could not connect to database", err)
+  }
 
-	utils.StartGoroutineSetup()
+  utils.StartGoroutineSetup()
 
   // Setup routes
-	routes.AuthRoutes(app)
-	routes.SwaggerRoute(app)
-	routes.MonitorRoutes(app)
-	routes.UserRoutes(app)
-	routes.NotificationRoutes(app)
-	routes.StatusPagesRoutes(app)
-	routes.UIRoutes(app)
+  routes.AuthRoutes(app)
+  routes.SwaggerRoute(app)
+  routes.MonitorRoutes(app)
+  routes.UserRoutes(app)
+  routes.NotificationRoutes(app)
+  routes.StatusPagesRoutes(app)
+  routes.UIRoutes(app)
 
   // Export prometheus metrics
   prometheus := fiberprometheus.New("upstat")
